@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>ajax-test</title>
+	</head>
+		
+		<!--
+		
+		Simple cross-browser ajax call to authenticate without the browser throwing up a login dialog
+		
+		Tested in 
+		Chrome 20.0.1132.47 m 
+		Safari  5.1.7
+		Internet Explorer 9.0.8
+		Internet Explorer 7/8 through IE 9 Browser Mode
+		-->
+		
+		
+	<body>
+		<a href="#" id="fire">Fire</a>
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/json2.js"></script>
+		<script type="text/javascript" src="js/webtoolkit.base64.js"></script>	
+		<script>
+			jQuery.support.cors = true;
+	
+			var username = "";
+			var password = "";
+			var b64 = "Basic " +  encode(username + ":" + password);
+			
+			
+			function encode(txt) {
+				if(typeof(btoa) === 'function'){
+					return window.btoa(unescape(encodeURIComponent(txt)));
+				}else{
+					return Base64.encode(txt);
+				}
+			}
+			
+			
+			
+			$('#fire').click(function(){fireAjax("https://sunglass.io/api/v1/projects", callBackFunction);});
+			
+			var fireAjax = function(url, callback){
+				
+				var request = $.ajax({
+					url : url,
+					type : "GET",
+					dataType : "json",
+					crossDomain: true,
+					contentType : "application/json",
+					headers : {"Content-Type":"application/json"},
+					beforeSend : function(xhr){xhr.setRequestHeader("Authorization", b64);},
+					error:function (xhr, ajaxOptions, thrownError){console.log("request error" + xhr.status + " "+thrownError); }    
+				});
+				request.success(callback);
+				request.done(function(msg) {console.log("request done");});
+				request.fail(function(jqXHR, textStatus) {console.log( "Request failed: "+jqXHR+" "+ textStatus );});
+			}
+			var callBackFunction = function(data){console.log(JSON.stringify(data));}	
+		</script>
+	</body>
+</html>
