@@ -54,7 +54,7 @@ import com.sg.models.View;
  *
  */
 @SuppressWarnings("deprecation")
-public class ConnectionMgr {
+public class ConnectionManager {
 
 	public enum CONNECTIONTYPE {
 		HTTP, HTTPS
@@ -86,11 +86,11 @@ public class ConnectionMgr {
 	 * @param String
 	 * 
 	 */
-	public ConnectionMgr(String _sid, String _token) {
+	public ConnectionManager(String _sid, String _token) {
 		this.sid = _sid;
 		this.token = _token;
-		ConnectionMgr.currentConnectType = CONNECTIONTYPE.HTTPS;
-		ConnectionMgr.currentConnectPort = 443;
+		ConnectionManager.currentConnectType = CONNECTIONTYPE.HTTPS;
+		ConnectionManager.currentConnectPort = 443;
 		baseURL = "https://sunglass.io/api/v1/";
 	}
 
@@ -103,13 +103,13 @@ public class ConnectionMgr {
 	 * 				HTTP or HTTPS 
 	 * 
 	 */
-	public ConnectionMgr(String _sid, String _token, CONNECTIONTYPE _connectType) {
+	public ConnectionManager(String _sid, String _token, CONNECTIONTYPE _connectType) {
 		this.sid = _sid;
 		this.token = _token;
-		ConnectionMgr.currentConnectType = _connectType;
+		ConnectionManager.currentConnectType = _connectType;
 		baseURL = (_connectType == CONNECTIONTYPE.HTTPS) ? "https://sunglass.io/api/v1/"
 				: "http://sunglass.io/api/v1/";
-		ConnectionMgr.currentConnectPort = (_connectType == CONNECTIONTYPE.HTTPS) ? 443
+		ConnectionManager.currentConnectPort = (_connectType == CONNECTIONTYPE.HTTPS) ? 443
 				: 80;
 	}
 	
@@ -476,7 +476,7 @@ public class ConnectionMgr {
 
 		httpClient.getCredentialsProvider().setCredentials(
 				new AuthScope("sunglass.io",
-						ConnectionMgr.currentConnectPort),
+						ConnectionManager.currentConnectPort),
 				new UsernamePasswordCredentials(this.sid, this.token));
 		
 		try {
@@ -575,7 +575,7 @@ public class ConnectionMgr {
 			httpclient = (DefaultHttpClient) wrapClient(httpclient);
 			httpclient.getCredentialsProvider().setCredentials(
 					new AuthScope("sunglass.io",
-							ConnectionMgr.currentConnectPort),
+							ConnectionManager.currentConnectPort),
 					new UsernamePasswordCredentials(username, password));
 
 			HttpGet httpget = new HttpGet(baseURL + endpoint);
@@ -702,7 +702,7 @@ public class ConnectionMgr {
 			httpClient = (DefaultHttpClient) wrapClient(httpClient);
 			httpClient.getCredentialsProvider().setCredentials(
 					new AuthScope("sunglass.io",
-							ConnectionMgr.currentConnectPort),
+							ConnectionManager.currentConnectPort),
 					new UsernamePasswordCredentials(this.sid, this.token));
 
 			URI postURI = new URI(baseURL + endpoint);
@@ -757,7 +757,7 @@ public class ConnectionMgr {
 			httpClient = (DefaultHttpClient) wrapClient(httpClient);
 			httpClient.getCredentialsProvider().setCredentials(
 					new AuthScope("sunglass.io",
-							ConnectionMgr.currentConnectPort),
+							ConnectionManager.currentConnectPort),
 					new UsernamePasswordCredentials(this.sid, this.token));
 
 			URI postURI = new URI(baseURL + endpoint);
@@ -849,7 +849,7 @@ public class ConnectionMgr {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		httpClient = (DefaultHttpClient) wrapClient(httpClient);
 		httpClient.getCredentialsProvider().setCredentials(
-				new AuthScope("sunglass.io", ConnectionMgr.currentConnectPort),
+				new AuthScope("sunglass.io", ConnectionManager.currentConnectPort),
 				new UsernamePasswordCredentials(this.sid, this.token));
 
 		URI getURI;

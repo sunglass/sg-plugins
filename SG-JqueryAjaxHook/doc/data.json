@@ -1,0 +1,723 @@
+{
+    "project": {},
+    "files": {
+        "SunglassConnectionManager.js": {
+            "name": "SunglassConnectionManager.js",
+            "modules": {},
+            "classes": {
+                "Sunglass.ConnectionManager": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Sunglass": 1
+            }
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Sunglass.ConnectionManager": {
+            "name": "Sunglass.ConnectionManager",
+            "shortname": "Sunglass.ConnectionManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "Sunglass",
+            "file": "SunglassConnectionManager.js",
+            "line": 14
+        }
+    },
+    "classitems": [
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 20,
+            "itemtype": "property",
+            "name": "url",
+            "type": "{String}",
+            "default": "\"https://sunglass.io/api/v1\"",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 27,
+            "itemtype": "property",
+            "name": "sid",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 34,
+            "itemtype": "property",
+            "name": "token",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 41,
+            "itemtype": "property",
+            "name": "b64",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 48,
+            "itemtype": "property",
+            "name": "content_type",
+            "type": "{String}",
+            "default": "\"application/json\"",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 55,
+            "itemtype": "property",
+            "name": "dev",
+            "type": "{Boolean}",
+            "default": "true",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 62,
+            "itemtype": "property",
+            "name": "version",
+            "type": "{Number}",
+            "default": "1.0",
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 69,
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sid",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "token",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "content_type",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "dev",
+                    "description": "Are we gonna use developer mode",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 103,
+            "itemtype": "method",
+            "name": "getUserDetails",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 109,
+            "itemtype": "method",
+            "name": "getProjects",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 115,
+            "itemtype": "method",
+            "name": "getProject",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 121,
+            "itemtype": "method",
+            "name": "getSpaces",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 127,
+            "itemtype": "method",
+            "name": "getSpace",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 133,
+            "itemtype": "method",
+            "name": "getSubSpaces",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 139,
+            "itemtype": "method",
+            "name": "getSubSpace",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 145,
+            "itemtype": "method",
+            "name": "getModels",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 151,
+            "itemtype": "method",
+            "name": "getModel",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 157,
+            "itemtype": "method",
+            "name": "getMetaModels",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 163,
+            "itemtype": "method",
+            "name": "getMetaModel",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 169,
+            "itemtype": "method",
+            "name": "getModelVersions",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 175,
+            "itemtype": "method",
+            "name": "getModelVersion",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 181,
+            "itemtype": "method",
+            "name": "getNotes",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 187,
+            "itemtype": "method",
+            "name": "getNote",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 193,
+            "itemtype": "method",
+            "name": "getNoteAttachments",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 199,
+            "itemtype": "method",
+            "name": "getNoteAttachment",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 205,
+            "itemtype": "method",
+            "name": "getCollaborators",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 211,
+            "itemtype": "method",
+            "name": "getCollaborators",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 217,
+            "itemtype": "method",
+            "name": "getCollaborator",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 223,
+            "itemtype": "method",
+            "name": "getCollaborator",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 230,
+            "itemtype": "method",
+            "name": "setProjectName",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 238,
+            "itemtype": "method",
+            "name": "setProjectDescription",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 247,
+            "itemtype": "method",
+            "name": "setSpaceName",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 255,
+            "itemtype": "method",
+            "name": "setSpaceTransformationMatrix",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 263,
+            "itemtype": "method",
+            "name": "setMetaModelName",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 271,
+            "itemtype": "method",
+            "name": "setMetaModelTransformationMatrix",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 279,
+            "itemtype": "method",
+            "name": "setNoteData",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 286,
+            "itemtype": "method",
+            "name": "setNoteAttachment",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 295,
+            "itemtype": "method",
+            "name": "createProject",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 303,
+            "itemtype": "method",
+            "name": "createProject",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 311,
+            "itemtype": "method",
+            "name": "createSpace",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 319,
+            "itemtype": "method",
+            "name": "createMetaModel",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 327,
+            "itemtype": "method",
+            "name": "createNote",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 337,
+            "itemtype": "method",
+            "name": "deleteProject",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 342,
+            "itemtype": "method",
+            "name": "deleteSpace",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 347,
+            "itemtype": "method",
+            "name": "deleteModel",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 352,
+            "itemtype": "method",
+            "name": "deleteMetaModel",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        },
+        {
+            "file": "SunglassConnectionManager.js",
+            "line": 358,
+            "itemtype": "method",
+            "name": "deleteNote",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Method"
+                }
+            ],
+            "class": "Sunglass.ConnectionManager",
+            "namespace": "Sunglass"
+        }
+    ]
+}

@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sg.ConnectionMgr;
+import com.sg.ConnectionManager;
 import com.sg.json.*;
 
 import com.sg.models.*;
@@ -58,7 +58,7 @@ public class SunglassConnect {
 	 * Connection Manager which encapsulates all the gory details of
 	 * the HTTP client methods.
 	 */
-	public ConnectionMgr cm;
+	public ConnectionManager cm;
 	
 	/**
 	 * The parent processing applet
@@ -78,7 +78,7 @@ public class SunglassConnect {
 	 * 			 token (unique to user - available at your Sunglass account)
 	 */
 	public SunglassConnect(PApplet theParent, String sid, String token) {
-		cm = new ConnectionMgr(sid, token);
+		cm = new ConnectionManager(sid, token);
 		myParent = theParent;
 	}
 	

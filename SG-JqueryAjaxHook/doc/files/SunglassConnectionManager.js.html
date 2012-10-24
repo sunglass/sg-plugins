@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SunglassConnectionManager.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Sunglass.ConnectionManager.html">Sunglass.ConnectionManager</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: SunglassConnectionManager.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;*!
+ * Sunglass Connection Manager v1.0
+ * http:&#x2F;&#x2F;sunglass.io
+ *
+ * Copyright 2012 Design Play Technologies
+ * Released under the MIT license
+ * https:&#x2F;&#x2F;sunglass.io&#x2F;tnc.html
+ *
+ * Date: Thu Sep 20 2012 21:13:05 GMT-0400 (Eastern Daylight Time)
+ *&#x2F;
+
+var Sunglass = {};
+
+&#x2F;**
+* @namespace Sunglass
+* @class ConnectionManager
+*&#x2F;
+Sunglass.ConnectionManager =  {
+	
+	&#x2F;**
+	* @property url
+	* @type {String}
+	* @default &quot;https:&#x2F;&#x2F;sunglass.io&#x2F;api&#x2F;v1&quot;
+	*&#x2F;	
+	url : &quot;https:&#x2F;&#x2F;sunglass.io&#x2F;api&#x2F;v1&quot;,
+	
+	&#x2F;**
+	* @property sid
+	* @type {String}
+	* @default &quot;&quot;
+	*&#x2F;
+	sid : &quot;&quot;,
+	
+	&#x2F;**
+	* @property token
+	* @type {String}
+	* @default &quot;&quot;
+	*&#x2F;
+	token : &quot;&quot;,
+	
+	&#x2F;**
+	* @property b64
+	* @type {String}
+	* @default &quot;&quot;
+	*&#x2F;
+	b64 : &quot;&quot;,
+	
+	&#x2F;**
+	* @property content_type
+	* @type {String}
+	* @default &quot;application&#x2F;json&quot;
+	*&#x2F;
+	content_type : &quot;application&#x2F;json&quot;,
+	
+	&#x2F;**
+	* @property dev
+	* @type {Boolean}
+	* @default true
+	*&#x2F;
+	dev : true,
+	
+	&#x2F;**
+	* @property version
+	* @type {Number}
+	* @default 1.0
+	*&#x2F;
+	version : 1.0,
+	
+	&#x2F;**
+	* @method init
+	* @param {String} url
+	* @param {String} sid
+	* @param {String} token
+	* @param {String} content_type
+	* @param {Boolean} dev Are we gonna use developer mode
+	*&#x2F;
+	init : function (url, sid, token, content_type, dev){		
+
+		Sunglass.ConnectionManager.url = url;
+		Sunglass.ConnectionManager.sid = sid;
+		Sunglass.ConnectionManager.token = token;
+		Sunglass.ConnectionManager.content_type = content_type;
+		Sunglass.ConnectionManager.dev = dev;	
+		Sunglass.ConnectionManager.b64 = &quot;Basic &quot; + Sunglass.ConnectionManager.encode(this.sid+&quot;:&quot;+this.token);
+	},
+	
+	&#x2F;&#x2F;Misc
+	
+	encode : function (text) {
+		if(typeof(btoa) === &#x27;function&#x27;){
+			return window.btoa(unescape(encodeURIComponent(text)));
+		}else{
+			return Base64.encode(text);
+		}
+	},
+	
+	authenticate : function (callback){
+		return true;
+	},
+	
+	&#x2F;&#x2F;GET
+	
+	&#x2F;**
+	* @method getUserDetails
+	* @param {Method} callback
+	*&#x2F;
+	getUserDetails : function (callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;users&quot;, callback)},
+	
+	&#x2F;**
+	* @method getProjects
+	* @param {Method} callback
+	*&#x2F;
+	getProjects : function (callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&quot;, callback)},
+	
+	&#x2F;**
+	* @method getProject
+	* @param {Method} callback
+	*&#x2F;
+	getProject : function (project_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id, callback)},
+	
+	&#x2F;**
+	* @method getSpaces
+	* @param {Method} callback
+	*&#x2F;
+	getSpaces : function (project_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&quot;, callback)},
+	
+	&#x2F;**
+	* @method getSpace
+	* @param {Method} callback
+	*&#x2F;
+	getSpace : function (project_id, space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id, callback)},
+	
+	&#x2F;**
+	* @method getSubSpaces
+	* @param {Method} callback
+	*&#x2F;
+	getSubSpaces : function (project_id, parent_space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+parent_space_id+&quot;&#x2F;subspaces&quot;, callback)},
+	
+	&#x2F;**
+	* @method getSubSpace
+	* @param {Method} callback
+	*&#x2F;
+	getSubSpace : function (project_id, parent_space_id, space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+parent_space_id+&quot;&#x2F;subspaces&#x2F;&quot;+space_id, callback)},
+	
+	&#x2F;**
+	* @method getModels
+	* @param {Method} callback
+	*&#x2F;
+	getModels : function (project_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;models&quot;, callback)},
+	
+	&#x2F;**
+	* @method getModel
+	* @param {Method} callback
+	*&#x2F;
+	getModel : function (project_id, model_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;models&#x2F;&quot;+model_id, callback)},
+	
+	&#x2F;**
+	* @method getMetaModels
+	* @param {Method} callback
+	*&#x2F;
+	getMetaModels : function (project_id, space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&quot;, callback)},
+	
+	&#x2F;**
+	* @method getMetaModel
+	* @param {Method} callback
+	*&#x2F;		
+	getMetaModel : function (project_id, space_id, meta_model_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&#x2F;&quot;+meta_model_id, callback)},
+	
+	&#x2F;**
+	* @method getModelVersions
+	* @param {Method} callback
+	*&#x2F;
+	getModelVersions : function (project_id, model_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;models&#x2F;&quot;+model_id+&quot;&#x2F;versions&quot;, callback)},
+	
+	&#x2F;**
+	* @method getModelVersion
+	* @param {Method} callback
+	*&#x2F;
+	getModelVersion : function (project_id, model_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;models&#x2F;&quot;+model_id+&quot;&#x2F;versions&#x2F;&quot;+version_id, callback)},
+	
+	&#x2F;**
+	* @method getNotes
+	* @param {Method} callback
+	*&#x2F;
+	getNotes : function (project_id, space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&quot;, callback)},
+	
+	&#x2F;**
+	* @method getNote
+	* @param {Method} callback
+	*&#x2F;
+	getNote : function (project_id, space_id, note_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id, callback)},
+	
+	&#x2F;**
+	* @method getNoteAttachments
+	* @param {Method} callback
+	*&#x2F;
+	getNoteAttachments : function (project_id, space_id, note_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id+&quot;&#x2F;attachments&quot;, callback)},
+	
+	&#x2F;**
+	* @method getNoteAttachment
+	* @param {Method} callback
+	*&#x2F;
+	getNoteAttachment : function (project_id, space_id, note_id, attachment_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id+&quot;&#x2F;attachments&#x2F;&quot;+attachment_id, callback)},
+	
+	&#x2F;**
+	* @method getCollaborators
+	* @param {Method} callback
+	*&#x2F;
+	getCollaborators : function (project_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;collaborators&quot;, callback)},
+	
+	&#x2F;**
+	* @method getCollaborators
+	* @param {Method} callback
+	*&#x2F;
+	getCollaborators : function (project_id, space_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;collaborators&quot;, callback)},
+	
+	&#x2F;**
+	* @method getCollaborator
+	* @param {Method} callback
+	*&#x2F;
+	getCollaborator : function (project_id, collaborator_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;collaborators&#x2F;&quot;+collaborator_id, callback)},
+	
+	&#x2F;**
+	* @method getCollaborator
+	* @param {Method} callback
+	*&#x2F;
+	getCollaborator : function (project_id, space_id, collaborator_id, callback){this.ajax.ajaxGET(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;collaborators&#x2F;&quot;+collaborator_id, callback)},
+	
+	&#x2F;&#x2F;SET
+	&#x2F;**
+	* @method setProjectName
+	* @param {Method} callback
+	*&#x2F;
+	setProjectName : function (project_id, project_name, callback){
+		data = { &quot;name&quot; : project_name };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id, data, callback);
+	},
+	&#x2F;**
+	* @method setProjectDescription
+	* @param {Method} callback
+	*&#x2F;
+	setProjectDescription : function (project_id, project_description, callback){
+		data = { &quot;description&quot; : project_description };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id, data, callback);
+	},
+	
+	&#x2F;**
+	* @method setSpaceName
+	* @param {Method} callback
+	*&#x2F;
+	setSpaceName : function (project_id, space_id, space_name, callback){
+		data = { &quot;name&quot; : space_name };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id, data, callback);
+	},
+	&#x2F;**
+	* @method setSpaceTransformationMatrix
+	* @param {Method} callback
+	*&#x2F;
+	setSpaceTransformationMatrix : function (project_id, space_id, transformation_matrix, callback){
+		data = {&quot;transformMatrix&quot; : transformation_matrix};
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id, data, callback);
+	},
+	&#x2F;**
+	* @method setMetaModelName
+	* @param {Method} callback
+	*&#x2F;
+	setMetaModelName : function (project_id, space_id, meta_model_id, meta_model_name, callback){
+		data = {&quot;name&quot; : meta_model_name};
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&#x2F;&quot;+meta_model_id, data, callback);
+	},
+	&#x2F;**
+	* @method setMetaModelTransformationMatrix
+	* @param {Method} callback
+	*&#x2F;
+	setMetaModelTransformationMatrix : function (project_id, space_id, meta_model_id, tran){
+		data = {&quot;transformMatrix&quot; : transformation_matrix};
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&#x2F;&quot;+meta_model_id, data, callback);
+	},
+	&#x2F;**
+	* @method setNoteData
+	* @param {Method} callback
+	*&#x2F;
+	setNoteData : function (project_id, space_id, note_id, note_data, callback){
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id, note_data, callback);
+	},
+	&#x2F;**
+	* @method setNoteAttachment
+	* @param {Method} callback
+	*&#x2F;
+	setNoteAttachment : function (project_id, space_id, note_id, attachment_id, attachment_data, callback){
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id+&quot;&#x2F;attachments&#x2F;&quot;attachment_id, attachment_data, callback);
+	},
+	
+	&#x2F;&#x2F;CREATE
+	&#x2F;**
+	* @method createProject
+	* @param {Method} callback
+	*&#x2F;
+	createProject : function (project_name, callback){
+		data = { &quot;name&quot; : project_name };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&quot;, data, callback);
+	},
+	&#x2F;**
+	* @method createProject
+	* @param {Method} callback
+	*&#x2F;
+	createProject : function (project_name, project_description, callback){
+		data = { &quot;name&quot; : project_name, &quot;description&quot; : project_description };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&quot;, data, callback);
+	},
+	&#x2F;**
+	* @method createSpace
+	* @param {Method} callback
+	*&#x2F;
+	createSpace : function (project_id, parent_space_id, space_name, callback){
+		data = { &quot;name&quot; : space_name };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+parent_space_id+&quot;&#x2F;subSpaces&quot;, data, callback);
+	},
+	&#x2F;**
+	* @method createMetaModel
+	* @param {Method} callback
+	*&#x2F;
+	createMetaModel : function (project_id, space_id, model_id, callback){
+		data = { &quot;modelId&quot; : model_id };
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&quot;, data, callback);
+	},
+	&#x2F;**
+	* @method createNote
+	* @param {Method} callback
+	*&#x2F;
+	createNote : function (project_id, space_id, note_data, callback){
+		
+		this.ajax.ajaxPOST(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&quot;, note_data, callback);
+	},
+		
+	&#x2F;&#x2F;DELETE
+	&#x2F;**
+	* @method deleteProject
+	* @param {Method} callback
+	*&#x2F;
+	deleteProject : function (project_id, callback){this.ajax.ajaxDELETE(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id, callback)},
+	&#x2F;**
+	* @method deleteSpace
+	* @param {Method} callback
+	*&#x2F;
+	deleteSpace : function (project_id, space_id, callback){this.ajax.ajaxDELETE(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id, callback)},
+	&#x2F;**
+	* @method deleteModel
+	* @param {Method} callback
+	*&#x2F;
+	deleteModel : function (project_id, model_id, callback){this.ajax.ajaxDELETE(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;models&#x2F;&quot;+model_id, callback)},
+	&#x2F;**
+	* @method deleteMetaModel
+	* @param {Method} callback
+	*&#x2F;
+	deleteMetaModel : function (project_id, space_id, meta_model_id, callback){this.ajax.ajaxDELETE(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;metamodels&#x2F;&quot;+meta_model_id, callback)},
+	
+	&#x2F;**
+	* @method deleteNote
+	* @param {Method} callback
+	*&#x2F;
+	deleteNote : function (project_id, space_id, note_id, callback){this.ajax.ajaxDELETE(this.b64, this.url + &quot;&#x2F;projects&#x2F;&quot;+project_id+&quot;&#x2F;spaces&#x2F;&quot;+space_id+&quot;&#x2F;notes&#x2F;&quot;+note_id, callback)},
+	
+	&#x2F;&#x2F;todo
+	&#x2F;&#x2F;UPLOAD AND DOWNLOAD
+	
+	downloadModel : function (project_id, model_id, file_path, callback){
+		
+	},
+	
+	downloadModel : function (project_id, model_id, file_name, file_path, model_type, callback){
+		
+	},
+	
+	downloadNoteAttachment : function (project_id, space_id, note_id, attachment_id, callback){
+		
+	},
+	
+	uploadNoteAttachment : function (project_id, space_id, note_id, attachment_data){
+		
+	}
+	
+	uploadModelAndVersion : function (project_id, file_path, file_name, message, cover_image_path, cover_image_name, callback){
+		
+	},
+	
+	uploadModelAndVersionAndReference : function (project_id, space_id, file_path, file_name, message, cover_image_path, cover_image_name, callback){
+		
+	}, 
+	
+	updateModelAndVersion : function (project_id, model_id, message, file_name, file_path, cover_image_name, cover_image_path, callback) {
+		
+	},
+	
+	
+	ajax : {
+		ajaxGET : function(credentials, url, callback){
+
+			var request = $.ajax({
+				url : url,
+				type : &quot;GET&quot;,
+				dataType : &quot;json&quot;,
+				crossDomain: true,
+				beforeSend : function(xhr){xhr.setRequestHeader(&quot;Authorization&quot;, credentials);},
+				error:function (xhr, textStatus, thrownError){console.log(&quot;Request error: &quot;+xhr.status+&quot; &quot;+thrownError)}    
+			});
+			
+			request.success(callback);
+			request.fail(function(xhr, textStatus, thrownError) {console.log( &quot;Request failed: &quot;+xhr.status+&quot; &quot;+ thrownError )});
+			request.done(function(msg) {});
+			
+			
+		},
+		
+		ajaxPOST : function(credentials, url, post_data, callback){
+			
+			var request = $.ajax({
+				url : url,
+				type : &quot;POST&quot;,
+				dataType : &quot;json&quot;,
+				data : JSON.stringify(post_data),
+				crossDomain: true,
+				beforeSend : function(xhr){xhr.setRequestHeader(&quot;Authorization&quot;, credentials);},
+				error:function (xhr, textStatus, thrownError){console.log(&quot;Request error: &quot;+xhr.status+&quot; &quot;+thrownError)}    
+			});
+			
+			request.success(callback);
+			request.fail(function(xhr, textStatus, thrownError) { console.log( &quot;Request failed: &quot;+xhr.status+&quot; &quot;+ thrownError )});
+			request.done(function(msg){});
+				
+		},
+		 
+		ajaxDELETE : function(credentials, url, post_data, callback){
+			var request = $.ajax({
+				url : url,
+				type : &quot;DELETE&quot;,
+				dataType : &quot;json&quot;,
+				data : JSON.stringify(post_data),
+				crossDomain: true,
+				beforeSend : function(xhr){xhr.setRequestHeader(&quot;Authorization&quot;, credentials);},
+				error:function (xhr, textStatus, thrownError){console.log(&quot;Request error: &quot;+xhr.status+&quot; &quot;+thrownError)}    
+			});
+			
+			request.success(callback);
+			request.fail(function(xhr, textStatus, thrownError) { console.log( &quot;Request failed: &quot;+xhr.status+&quot; &quot;+ thrownError )});
+			request.done(function(msg){});
+		}
+		 
+	}
+}
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Sunglass Connection Manager</title>
+	</head>
+		
+		<!--
+		
+		-->
+		
+		
+	<body>
+		<a href="#" id="fire">Get Projects</a>
+			
+		<pre id="response"></pre>
+	
+		
+		<script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/lib/json2.js"></script>
+		<script type="text/javascript" src="js/lib/webtoolkit.base64.js"></script>	
+		<script type="text/javascript" src="js/src/SunglassConnectionManager.js"></script>
+		<script>
+		
+		//set our variables
+			
+		var url = "https://sunglass.io/api/v1";
+		var sid = "";
+		var token = "";
+		var content_type = "application/json";
+		var dev = false;
+		
+		
+		var sg = Sunglass.ConnectionManager;
+		
+		//and run the init method
+		sg.init(url, sid, token, content_type, dev);
+		
+		//create a callback method to handle our response
+		var myCallback = function(data){
+			$("#response").append(JSON.stringify(data, null, " "));
+		}
+		
+		//bind the api call to some event and send it the callback method
+		$("#fire").bind('click',function(){
+			sg.getProjects(myCallback);
+		});
+			
+	
+		
+		</script>
+	</body>
+</html>

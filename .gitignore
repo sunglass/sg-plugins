@@ -1,0 +1,12 @@
+.project
+.metadata
+.classpath
+.DS_Store*
+Icon?
+Thumbs.db
+
+SG-ProcessingHook/lib
+SG-ProcessingHook/bin
+SG-ProcessingHook/resources
+SG-ProcessingHook/web
+SG-ProcessingHook/distribution
