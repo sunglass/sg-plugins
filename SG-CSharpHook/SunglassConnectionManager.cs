@@ -33,9 +33,9 @@ namespace Sunglass
         /// Constructor
         ///</Summary>
 
-        public ConnectionManager(String url, String sid, String token, String type, Boolean dev)
+        public ConnectionManager(String url, String sid, String token, String type)
         {
-            this.dev = dev;
+            
             this.url = url;
             this.sid = sid;
             this.token = token;
@@ -53,32 +53,11 @@ namespace Sunglass
             request.Accept = type;
             request.ContentType = type;
 
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
-
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             request.Headers.Add("Authorization", "Basic " + credentials);
 
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
-
-
             HttpWebResponse response = null;
             string responseString = "";
-
-
 
             try
             {
@@ -112,8 +91,7 @@ namespace Sunglass
             }
             finally
             {
-                //Unregister callback
-                ServicePointManager.ServerCertificateValidationCallback -= ValidateRemoteCertificate;
+   ;
                 //Close Response
                 if (response != null) response.Close();
             }
@@ -129,26 +107,9 @@ namespace Sunglass
             request.Method = "POST";
             request.Accept = type;
             request.ContentType = type;
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
 
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             request.Headers.Add("Authorization", "Basic " + credentials);
-
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
 
             using (requestWriter = new StreamWriter(request.GetRequestStream()))
             {
@@ -190,8 +151,7 @@ namespace Sunglass
             }
             finally
             {
-                //Unregister callback
-                ServicePointManager.ServerCertificateValidationCallback -= ValidateRemoteCertificate;
+                
                 //Close Response
                 if (response != null) response.Close();
             }
@@ -209,26 +169,8 @@ namespace Sunglass
             request.Accept = type;
             request.ContentType = type;
 
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
-
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             request.Headers.Add("Authorization", "Basic " + credentials);
-
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
 
             using (requestWriter = new StreamWriter(request.GetRequestStream()))
             {
@@ -270,8 +212,8 @@ namespace Sunglass
             }
             finally
             {
-                //Unregister callback
-                ServicePointManager.ServerCertificateValidationCallback -= ValidateRemoteCertificate;
+                
+                
                 //Close Response
                 if (response != null) response.Close();
             }
@@ -285,26 +227,11 @@ namespace Sunglass
             request.Method = "DELETE";
             request.Accept = type;
             request.ContentType = type;
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
 
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             request.Headers.Add("Authorization", "Basic " + credentials);
 
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
+
 
 
             HttpWebResponse response = null;
@@ -359,8 +286,6 @@ namespace Sunglass
         private String PostMultiPartFormDataPostRequest(string path, Dictionary<string, object> postParameters)
         {
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
-            //string formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
-            //string contentType = "multipart/form-data; boundary=" + boundary;
             byte[] formData = GetMultipartFormData(postParameters, boundary);
 
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(this.url + path);
@@ -370,26 +295,10 @@ namespace Sunglass
             myRequest.UserAgent = "Sunglass Connection Manager";
             myRequest.ContentLength = formData.Length;
             myRequest.Timeout = System.Threading.Timeout.Infinite;
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
 
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             myRequest.Headers.Add("Authorization", "Basic " + credentials);
 
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
 
             Stream rs = myRequest.GetRequestStream();
 
@@ -418,10 +327,7 @@ namespace Sunglass
             }
             finally
             {
-                //myRequest = null;
-                //Unregister callback
-                //ServicePointManager.ServerCertificateValidationCallback -= ValidateRemoteCertificate;
-                //Close Response
+
                 if (response != null) response.Close();
             }
 
@@ -433,7 +339,6 @@ namespace Sunglass
 
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
 
-            // Read file data
             FileStream fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
             byte[] data = new byte[fs.Length];
             fs.Read(data, 0, data.Length);
@@ -454,26 +359,8 @@ namespace Sunglass
             myRequest.UserAgent = "Sunglass Connection Manager";
             myRequest.ContentLength = formData.Length;
             myRequest.Timeout = System.Threading.Timeout.Infinite;
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
-
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             myRequest.Headers.Add("Authorization", "Basic " + credentials);
-
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            
-            //--------------------------------------------------------------------
 
             Stream rs = myRequest.GetRequestStream();
 
@@ -568,11 +455,7 @@ namespace Sunglass
             try
             {
                 WebClient client = new WebClient();
-
-                //This is broken
-                //client.Credentials = new NetworkCredential(this.username, this.password);
-
-                //do it the old fashioned way for now
+          
                 string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
                 client.Headers.Add("Authorization", "Basic " + credentials);
 
@@ -586,22 +469,6 @@ namespace Sunglass
             }
         }
 
-        // callback used to validate the certificate in an SSL conversation
-        // Use this for testing server that has self signed certificates
-        // Need to force System.Net.HttpWebRequest to accept and invalid SSL Certificate
-        private static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
-        {
-            Boolean Shady = true;
-            if (Shady)
-            {
-                // allow any old dodgy certificate...
-                return true;
-            }
-            else
-            {
-                return policyErrors == SslPolicyErrors.None;
-            }
-        }
 
         ///<Summary>
         ///Client Authentication
@@ -616,25 +483,10 @@ namespace Sunglass
             request.Accept = this.type;
             request.ContentType = this.type;
 
-            //for some reason this is broken
-            //request.Credentials = new NetworkCredential(this.username, this.password);
-            //CredentialCache credentialCache = new CredentialCache();
-            //credentialCache.Add(new System.Uri(this.url), "Basic", new NetworkCredential(this.username, this.password));
-            //request.Credentials = credentialCache;   
-            //request.PreAuthenticate = true;
-
-            //do it the old fashioned way for now
             string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(this.sid + ":" + this.token));
             request.Headers.Add("Authorization", "Basic " + credentials);
 
-            //--------------------------------------------------------------------
-            // FOR TEST SERVER ONLY
-            //--------------------------------------------------------------------
-            // allows for validation of SSL conversations
-            if(dev){
-         		ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-            }
-            //--------------------------------------------------------------------
+
 
             HttpWebResponse response = null;
 
@@ -668,8 +520,7 @@ namespace Sunglass
             }
             finally
             {
-                //Unregister callback
-                ServicePointManager.ServerCertificateValidationCallback -= ValidateRemoteCertificate;
+
                 //Close Response
                 if (response != null) response.Close();
             }
