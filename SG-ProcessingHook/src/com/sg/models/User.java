@@ -1,63 +1,33 @@
 package com.sg.models;
 
-public class User extends Object{
-	
-	private String name;
-	private String email;
-	private String href;
-	private String projectsList;
-		
-	public User(int id, String n, String e, String dC, String dM){
-		this.UID = id;
-		this.name = n;
-		this.email = e;
-		this.createdAt = dC;
-		this.modifiedAt = dM;
+public class User {
+	private User user;
+	private String role;
+	private String space;
+
+	public User getUser() {
+	return user;
 	}
-	
-	
-	public User(int id, String n, String e, String h, String pL, String dC, String dM){
-		this.UID = id;
-		this.name = n;
-		this.email = e;
-		this.href = h;
-		this.projectsList = pL;
-		this.createdAt = dC;
-		this.modifiedAt = dM;
+
+	public void setUser(User user) {
+	this.user = user;
 	}
-	
-	public String getName(){
-		return this.name;
+
+	public String getRole() {
+	return role;
 	}
-	
-	public int getUserId(){
-		return this.UID;
+
+	public void setRole(String role) {
+	this.role = role;
 	}
-	
-	public String getEmail(){
-		return this.email;
+
+	public String getSpace() {
+	return space;
 	}
-	
-	public String getHref(){
-		return this.href;
+
+	public void setSpace(String space) {
+	this.space = space;
 	}
-	
-	public String projectsLink(){
-		return this.projectsList;
-	}
-	
-//	public String updateName(String name){
-//		JSONObject jsonName = new JSONObject();
-//		try {
-//			jsonName.put("name",name);
-//			JSONObject newName = sgConnectMgr.httpPutRequest(this.href, jsonName);
-//			this.name = newName.getString("name");
-//			return this.name;
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-	
+
+
 }

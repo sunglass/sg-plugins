@@ -1,95 +1,118 @@
 package com.sg.models;
 
-import java.util.*;
+import java.util.ArrayList;
 
-public class Space extends Object{
+public class Space {
+
+	private String id;
+	private String name;
+	private String href;
+	private String parentSpaceId;
+	private Integer projectId;
+	private ArrayList<Integer> transformMatrix = new ArrayList<Integer>();
+	private String groupsList;
+	private String role;
+	private MetaData metaData;
+	private String createdAt;
+	private String modifiedAt;
+	private SpaceLinks links;
 	
-	protected int parentId;
-	protected int projectId;
-	protected String href;
-	protected ArrayList<Space> spacesList;
-	protected ArrayList<Note> notesList;
-	protected ArrayList<View> viewsList;
-	protected ArrayList<User> collaboratorList;
-	protected String projectLink;
-	protected String subSpacesLink;
-	protected String modelsLink;
-	protected String viewsLink;
-	/**
-	 * Constructor
-	 * 
-	 */
-	public Space(int id, int pId, int prId, String _href, ArrayList<Space>spList,ArrayList<Note> nList, ArrayList<View> vList, String pL, String ssL, String mL, String vL, String dC, String dM){
-		this.UID = id;
-		this.parentId = pId;
-		this.projectId = prId;
-		this.href = _href;
-		this.spacesList = spList;
-		this.notesList = nList;
-		this.viewsList = vList;
-		this.projectLink = pL;
-		this.subSpacesLink = ssL;
-		this.modelsLink = mL;
-		this.viewsLink = vL;
-		this.createdAt = dC;
-		this.modifiedAt = dM;
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public int getParentId(){
-		return this.parentId;
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public int getProjectId(){
-		return this.projectId;
+	public String getId() {
+	return id;
 	}
 
- 	public String getProjectLink(){
-		return this.projectLink;
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public String getSubSpacesLink(){
-		return this.subSpacesLink;
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public String getModelsLink(){
-		return this.modelsLink;
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public String getViewsLink(){
-		return this.viewsLink;
+	public void setId(String id) {
+	this.id = id;
 	}
 
-	/**
-	 * Get the parent stage to this stage
-	 * 
-	 */
-//	 public Space getParentSpace(){
-//		Space parent = sgConnectMgr.getProject(this.projectId).getSpace(this.parentId);
-//		return parent;
-//	}
-	/**
-	 * Done
-	 * 
-	 */
-	public boolean isRootSpace(){
-		if(this.UID == this.parentId){
-			return true;
-		}
-		return false;
+	public String getName() {
+	return name;
 	}
+
+	public void setName(String name) {
+	this.name = name;
+	}
+
+	public String getHref() {
+	return href;
+	}
+
+	public void setHref(String href) {
+	this.href = href;
+	}
+
+	public String getParentSpaceId() {
+	return parentSpaceId;
+	}
+
+	public void setParentSpaceId(String parentSpaceId) {
+	this.parentSpaceId = parentSpaceId;
+	}
+
+	public Integer getProjectId() {
+	return projectId;
+	}
+
+	public void setProjectId(Integer projectId) {
+	this.projectId = projectId;
+	}
+
+	public ArrayList<Integer> getTransformMatrix() {
+	return transformMatrix;
+	}
+
+	public void setTransformMatrix(ArrayList<Integer> transformMatrix) {
+	this.transformMatrix = transformMatrix;
+	}
+
+	public String getGroupsList() {
+	return groupsList;
+	}
+
+	public void setGroupsList(String groupsList) {
+	this.groupsList = groupsList;
+	}
+
+	public String getRole() {
+	return role;
+	}
+
+	public void setRole(String role) {
+	this.role = role;
+	}
+
+	public MetaData getMetaData() {
+	return metaData;
+	}
+
+	public void setMetaData(MetaData metaData) {
+	this.metaData = metaData;
+	}
+
+	public String getCreatedAt() {
+	return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+	this.createdAt = createdAt;
+	}
+
+	public String getModifiedAt() {
+	return modifiedAt;
+	}
+
+	public void setModifiedAt(String modifiedAt) {
+	this.modifiedAt = modifiedAt;
+	}
+
+	public SpaceLinks getLinks() {
+	return links;
+	}
+
+	public void setLinks(SpaceLinks links) {
+	this.links = links;
+	}
+
+	
+	
 }

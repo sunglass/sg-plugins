@@ -1,6 +1,6 @@
 package com.sg.models;
 
-public class Model {
+public class ModelDetails {
 
 	private String id;
 	private String name;
@@ -101,5 +101,5 @@ public class Model {
 	public void setVersion(String version) {
 	this.version = version;
 	}
-	
+		
 }
