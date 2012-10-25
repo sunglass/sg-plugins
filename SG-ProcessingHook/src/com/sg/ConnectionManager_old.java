@@ -618,6 +618,7 @@ public class ConnectionManager_old {
 
 		try {
 			httpClient = (DefaultHttpClient) wrapClient(httpClient);
+			
 			httpClient.getCredentialsProvider().setCredentials(
 					new AuthScope("sunglass.io",
 							ConnectionManager_old.currentConnectPort),
@@ -625,6 +626,7 @@ public class ConnectionManager_old {
 
 			URI postURI = new URI(baseURL + endpoint);
 			HttpPost request = new HttpPost();
+			
 			MultipartEntity entity = new MultipartEntity(
 					HttpMultipartMode.BROWSER_COMPATIBLE);
 			for (String filep : filePath) {

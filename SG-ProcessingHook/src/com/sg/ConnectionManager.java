@@ -1,8 +1,18 @@
 package com.sg;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpHost;
@@ -12,11 +22,16 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.client.AuthCache;
+import org.apache.http.client.ClientProtocolException;
 
 import com.sg.json.JSONException;
 import com.sg.json.JSONObject;
@@ -385,7 +400,7 @@ public class ConnectionManager {
 		}catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println(model_id);
 		JSONObject metaModelJSON = this.httpPostRequest("/projects/"+project_id+"/spaces/"+space_id+"/metamodels", data);
 		MetaModel metaModel = gson.fromJson(metaModelJSON.toString(), MetaModel.class);
 		return metaModel;
@@ -420,6 +435,85 @@ public class ConnectionManager {
 	}
 	
 	//UPLOAD AND DOWNLOAD
+	
+	public Model uploadModelandVersion(String endpoint, File modelFile, File coverImageFile, String message ){
+	
+		Map<String, Object> postParameters = new HashMap<String, Object>();
+		
+		postParameters.put("message", message);
+		postParameters.put("file", modelFile);	
+		postParameters.put("cover_image", coverImageFile);
+		
+		JSONObject modelJSON = this.postMultiPartFormData(endpoint, postParameters);
+		
+		ModelList models = gson.fromJson(modelJSON.toString(), ModelList.class);
+		
+		return models.getModels().get(0);
+	}
+	
+	public Model updateModelandVersion(String endpoint, File modelFile, File coverImageFile, String message){
+		
+		Map<String, Object> postParameters = new HashMap<String, Object>();
+		
+		postParameters.put("message", message);
+		postParameters.put("file", modelFile);	
+		postParameters.put("cover_image", coverImageFile);
+		
+		JSONObject modelJSON = this.postMultiPartFormData(endpoint, postParameters);
+		
+		NewModel model = gson.fromJson(modelJSON.toString(), NewModel.class);
+		return model.getModel();
+		
+	}
+	
+	public File downloadFile( String endpoint, File filepath){
+		
+		if(VERBOSE) System.out.println("[ConnMgr/saveToContainer] --Saving remote file: "+ endpoint + " to container:" + filepath.getName());
+		
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		
+		
+		
+		
+		URI getURI;
+		
+		
+		try {
+		//	getURI = new URI(endpoint);
+
+			HttpGet request = new HttpGet(this.url + endpoint);
+
+		//	request.setURI(getURI);
+			String auth = this.sid+":"+this.token;
+			String encoding = Base64.encodeBase64String(auth.getBytes());
+			request.setHeader("Authorization", "Basic " + encoding);
+			
+			
+			
+			HttpResponse response;
+
+			if(VERBOSE) System.out.println("[ConnMgr/saveToContainer] --Executing request "+ request.getRequestLine());
+			response = httpClient.execute(request);
+			
+			if (response.getStatusLine().getStatusCode() != 200)
+			{
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+			
+			if(VERBOSE) System.out.println("[ConnMgr/saveToContainer] --Response details"+ response.getEntity().getContent());
+			
+			File f = FileIO.convertStreamToFile(response.getEntity().getContent(), filepath);
+
+			return f;
+
+		} catch (ClientProtocolException e) {e.printStackTrace();
+		} catch (IOException e) {e.printStackTrace();
+		//} catch (URISyntaxException e1) {e1.printStackTrace();
+		}
+
+		return null;
+		
+	}
 	
 	//TODO
 	
@@ -602,6 +696,73 @@ public class ConnectionManager {
 		return null;
 	}
 	
+	//------------------ FILE TRANSFER FUNCTIONS
+	
+	public JSONObject postMultiPartFormData(String endpoint, Map<String, Object> postParameters){
+		
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		
+		try{
+			//httpClient = (DefaultHttpClient) wrapClient(httpClient);
+			
+			
+			HttpPost request = new HttpPost(this.url + endpoint);
+			
+			
+			MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			
+			Iterator it = postParameters.entrySet().iterator();
+			
+			while(it.hasNext()){
+				Map.Entry<String, Object> postParameter = (Map.Entry<String, Object>)it.next();
+				
+				//is it a file?
+				if (postParameter.getValue() instanceof File) {	
+					
+					File file = (File)postParameter.getValue();
+					FileBody fileBody = new FileBody(file, new MimetypesFileTypeMap().getContentType(file));
+					entity.addPart(postParameter.getKey().toString(),fileBody);
+					
+				}else{
+					
+					StringBody stringBody = new StringBody( postParameter.getValue().toString(), "text/plain", Charset.forName( "UTF-8" ));	
+					entity.addPart(postParameter.getKey().toString(), stringBody);
+				}
+				
+				
+			}
+			
+			
+			request.setEntity(entity);
+			
+			String auth = this.sid+":"+this.token;
+			String encoding = Base64.encodeBase64String(auth.getBytes());
+			request.setHeader("Authorization", "Basic " + encoding);
+			
+			
+			if(VERBOSE) System.out.println("[ConnMgr/upload] --Executing request " + request.getRequestLine());
+			
+			HttpResponse response = httpClient.execute(request);
+			
+			if (response.getStatusLine().getStatusCode() != 200) throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			
+			
+			JSONObject responseJSON = new JSONObject(FileIO.convertStreamToString(response.getEntity().getContent()));
+			
+			if (VERBOSE) {System.out.println("[ConnMgr/upload] --Response: " + responseJSON.toString());}
+			
+			return responseJSON;
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Called when the parent applet shuts down
 	 * 
@@ -612,6 +773,6 @@ public class ConnectionManager {
 		// shut down a thread used by this library.
 	}
 	
-	//------------------ FILE TRANSFER FUNCTIONS
+	
 	
 }
