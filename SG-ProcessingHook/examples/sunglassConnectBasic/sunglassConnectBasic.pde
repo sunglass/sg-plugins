@@ -1,42 +1,106 @@
-import com.sg.json.*;
-import com.sg.utils.*;
+package run;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import processing.core.PApplet;
+import processing.opengl.*;
+
 import com.sg.*;
+import com.sg.json.JSONException;
+import com.sg.json.JSONObject;
 import com.sg.models.*;
 
-void setup() {
-  size(100, 100, P3D);
 
-  //Create an Sunglass object
-  SunglassConnect sg = new SunglassConnect(this,"ACnrfkye0w+KEgkiOeZcDpD+LO2Wc=", "wfnZ/t7fBLaguRnmGPk65jG/34M=");
-  sg.cm.VERBOSE = false;
-  
-  try {
-    //Authenticate
-    int userId = sg.authenticate();
+public class SunglassApplet extends PApplet {
 
-    //list your existing projects
-    HashMap sgProjList = sg.getProjectList();
-    Iterator i = sgProjList.entrySet().iterator(); 
-    while (i.hasNext ()) {
-      Map.Entry entry = (Map.Entry)i.next();
-      System.out.print("[Project ID:" + entry.getKey() + ", "); 
-      System.out.print("Project Name: " + ((Project) entry.getValue()).getName() + ", ");
-      System.out.println("RootSpace ID:" +((Project) entry.getValue()).getRootSpaceId() + "]");
-    }
-    
-    //Create a project
-    Project proj = sg.createProject("My Processing Project");
-    System.out.print("[New project created with ID:" + proj.getId() + "]");
+	private static final long serialVersionUID = 1L;
+	
+	ConnectionManager cm;
+	
+	String url = "https://www.sunglass.io/api/v1";
+	String sid = "";
+	String token = "";
+	Boolean verbose = true;
+	
+	public void setup(){
+		size(200,200, OPENGL);
+		
+		cm = new ConnectionManager(url, sid, token, verbose);
+		
+		
+		String project_id = "";
+		
+		//ProjectList projects = cm.getProjects();
+		
+		//for(Project project : projects.getOwner()){
+		//	println(project.getName());
+		//	println(project.getLinks().getRootSpace());
+		//}
+		
+		//Upload a model and set version
+		
+		//Lets pick a project and a space
+		Project myProject = cm.getProject(project_id);
+		Space rootSpace = cm.getSpaces(project_id).getSpaces().get(0);
+		
+		//lets check out the metamodels
+		MetaModelList metaModels = cm.getMetaModels(project_id, rootSpace.getId());
+		
+		File modelFilepath = new File("/Users/rwillis/Desktop/upload_test/5tt.stl");
+		File coverImageFilePath = new File("/Users/rwillis/Desktop/upload_test/coverImage.png");
+		String commitMessage = "Testing File Uploading from Processing Library";
+		String endpoint = "/projects/"+project_id+"/models";
+		
+		//upload the model
+		Model myModel = cm.uploadModelandVersion(endpoint, modelFilepath, coverImageFilePath, commitMessage);
+		
+		//create a reference to it so we can see it on the stage
+		cm.createMetaModel("857", rootSpace.getId(), myModel.getId());
+		
+		//Update a model and set version
+		
+		String modelId = myModel.getId();
+		
+		File newModelFilePath = new File("");
+		File newCoverImageFilePath  = new File("");
+		commitMessage = "Testing File Upadating from Processing Library";
+		endpoint = "/projects/"+project_id+"/models/" + modelId;
+		
+		Model myNewModel = cm.updateModelandVersion(endpoint, newModelFilePath, newCoverImageFilePath, commitMessage);
+		
+		
+		//generic upload a series of files ie models and textures, commit messages or note attachments;
+		Map<String, Object> myFiles = new HashMap<String, Object>();
+		String myEndpoint = "";
+		//myFiles.put("", "");
+		//myFiles.put("", "");
+		//myFiles.put("", "");
+		//myFiles.put("", "");
+		
+		//cm.postMultiPartFormData(myEndpoint, myFiles);
 
-    //Upload model to the Project
-    Model m = sg.uploadModelToProject(proj);
-
-    //Download model from the Project
-    //The file path string is relative to your Processing application
-    sg.downloadModel(proj, m.getId(), "MySunglassProjects/");
-    } 
-  catch (Exception e) {
-    e.printStackTrace();
-  }
+		
+		//Download a model
+		
+		String filepath = "";
+		File file = new File(filepath);
+		String url = "";
+		
+		//cm.downloadFile(url, file);
+		
+		
+		//Add Note Attachment
+	
+		
+	}
+	
+	public void draw(){
+		background(255,0,0);
+	}
+	
+	public static void main(String _args[]) {
+		PApplet.main(new String[] { run.SunglassApplet.class.getName() });
+	}
 }
-
