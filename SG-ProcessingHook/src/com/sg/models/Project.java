@@ -11,7 +11,7 @@ private String href;
 private ProjectLinks links;
 private String createdAt;
 private String modifiedAt;
-private static AssetCounts assetCounts;
+private AssetCounts assetCounts;
 
 public Integer getId() {
 return id;
