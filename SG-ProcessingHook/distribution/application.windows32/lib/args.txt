@@ -1,3 +1,0 @@
- -Xms64m -Xmx1000m
-sunglassProtoV4
-sunglassProtoV4.jar,core.jar,gluegen-rt.jar,jogl.jar,opengl.jar,OBJLoader.jar,controlP5.jar,commons-codec-1.6.jar,commons-logging-1.1.1.jar,fluent-hc-4.2.jar,httpclient-4.2.jar,httpclient-cache-4.2.jar,httpcore-4.2.jar,httpmime-4.2.jar,SunglassConnect.jar

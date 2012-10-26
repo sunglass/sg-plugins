@@ -1,4 +1,0 @@
-#!/bin/sh
-
-APPDIR=$(dirname "$0")
-java  -Djava.library.path="$APPDIR" -cp "$APPDIR/lib/sunglassConnectViewer2.jar:$APPDIR/lib/core.jar:$APPDIR/lib/gluegen-rt.jar:$APPDIR/lib/jogl.jar:$APPDIR/lib/opengl.jar:$APPDIR/lib/OBJLoader.jar:$APPDIR/lib/controlP5.jar:$APPDIR/lib/commons-codec-1.6.jar:$APPDIR/lib/commons-logging-1.1.1.jar:$APPDIR/lib/fluent-hc-4.2.jar:$APPDIR/lib/httpclient-4.2.jar:$APPDIR/lib/httpclient-cache-4.2.jar:$APPDIR/lib/httpcore-4.2.jar:$APPDIR/lib/httpmime-4.2.jar:$APPDIR/lib/SunglassConnect.jar" sunglassConnectViewer2
