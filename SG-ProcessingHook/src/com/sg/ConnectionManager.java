@@ -1,15 +1,28 @@
 package com.sg;
 
+
+import com.sg.json.*;
+import com.sg.models.*;
+import com.sg.utils.*;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -23,6 +36,12 @@ import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -36,10 +55,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import org.apache.http.protocol.BasicHttpContext;
 
-import com.sg.json.*;
-import com.sg.models.*;
-import com.sg.utils.*;
-
 import com.google.gson.*;
 
 /**
@@ -51,10 +66,12 @@ import com.google.gson.*;
 
 public class ConnectionManager {
 	
-	private boolean VERBOSE;	
+	private boolean VERBOSE;
 	private String url;
 	private String sid;
 	private String token;
+	
+	public boolean authenticated = false;
 	
 	private Gson gson = new Gson();
 	
@@ -76,20 +93,48 @@ public class ConnectionManager {
 		this.sid = _sid;
 		this.token = _token;
 		this.VERBOSE = _VERBOSE;
+		this.authenticated = this.authenticate();
+	}
+	
+	public ConnectionManager(String _sid, String _token){
+		this.url = "https://sunglass.io/api/v1";
+		this.sid = _sid;
+		this.token = _token;
+		this.VERBOSE = false;
+		this.authenticated = this.authenticate();
 	}
 	
 	//------------------ API SPECIFIC FUNCTIONS
 	
 	// GET
 	
-//	public boolean authenticate(){
-//		return true;
-//	}
-//	
-//	
-//	public void getUserDetails(){
-//		
-//	}
+	public boolean authenticate(){
+		boolean auth = false;
+		ProjectList testProjects = this.getProjects();
+		if(testProjects != null){
+			auth = true;
+		}
+		return auth;
+	}
+
+	public Project sunglassWrite(String filepath, String projectName){
+		
+		java.util.Date date= new java.util.Date();
+		String message = new Timestamp(date.getTime()).toString();
+		
+		File file = new File(filepath);
+		
+		Project project = this.createProject(projectName);
+		Space space = this.getSpaces(project.getId()).getSpaces().get(0);
+		
+		String endpoint = "/projects/"+project.getId()+"/models";
+		
+		Model model = this.uploadModelAndMessage(endpoint, file, message);
+		this.createMetaModel(project.getId(), space.getId(), model.getId());
+		return project;
+	}
+	
+	
 	/**
 	 * get all of the projects for user
 	 */
@@ -723,6 +768,21 @@ public class ConnectionManager {
 	}
 	
 	//UPLOAD AND DOWNLOAD
+	
+	public Model uploadModelAndMessage(String endpoint, File modelFile, String message){
+		
+		Map<String, Object> postParameters = new HashMap<String, Object>();
+		postParameters.put("file", modelFile);	
+		postParameters.put("message", message);
+		
+		JSONObject modelJSON = this.postMultiPartFormData(endpoint, postParameters);
+		
+		ModelList models = gson.fromJson(modelJSON.toString(), ModelList.class);
+		
+		return models.getModels().get(0);
+		
+	}
+	
 	/**
 	 * upload a model and set its version
 	 *
@@ -828,6 +888,8 @@ public class ConnectionManager {
 	private JSONObject properHttpGetRequest(String endpoint){
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		httpClient = (DefaultHttpClient) wrapClient(httpClient);
+
 		
 		try {
         	URL url = new URL(this.url + endpoint);
@@ -878,7 +940,8 @@ public class ConnectionManager {
 	private JSONObject httpGetRequest(String endpoint){
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		
+		httpClient = (DefaultHttpClient) wrapClient(httpClient);
+
 		try {
 
 
@@ -918,6 +981,7 @@ public class ConnectionManager {
 	private JSONObject httpPostRequest(String endpoint, JSONObject jsonEntity) {
 	
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		httpClient = (DefaultHttpClient) wrapClient(httpClient);
 
 		
 		try {
@@ -969,6 +1033,8 @@ public class ConnectionManager {
 	private JSONObject httpDeleteRequest(String endpoint) {
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		httpClient = (DefaultHttpClient) wrapClient(httpClient);
+
 		
 		try {
 
@@ -1005,6 +1071,7 @@ public class ConnectionManager {
 	public JSONObject postMultiPartFormData(String endpoint, Map<String, Object> postParameters){
 		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
+		httpClient = (DefaultHttpClient) wrapClient(httpClient);
 		
 		try{
 			//httpClient = (DefaultHttpClient) wrapClient(httpClient);
@@ -1066,6 +1133,43 @@ public class ConnectionManager {
 		
 		return null;
 	}
+	
+	
+	/**
+	 * Temporary hack to work around SSL / cert checks
+	 * 
+	 * @param HttpClient
+	 * @return HttpClient
+	 */
+	private HttpClient wrapClient(final HttpClient base) {
+		try {
+			SSLContext ctx = SSLContext.getInstance("TLS");
+			X509TrustManager tm = new X509TrustManager() {
+				public void checkClientTrusted(X509Certificate[] xcs,
+						String string) throws CertificateException {
+				}
+
+				public void checkServerTrusted(X509Certificate[] xcs,
+						String string) throws CertificateException {
+				}
+
+				public X509Certificate[] getAcceptedIssuers() {
+					return null;
+				}
+			};
+			ctx.init(null, new TrustManager[] { (TrustManager) tm }, null);
+			SSLSocketFactory ssf = new SSLSocketFactory(ctx);
+			ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			ClientConnectionManager ccm = base.getConnectionManager();
+			SchemeRegistry sr = ccm.getSchemeRegistry();
+			sr.register(new Scheme("https", (SocketFactory) ssf, 443));
+			return new DefaultHttpClient(ccm, base.getParams());
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+	
+	
 	
 	/**
 	 * Called when the parent applet shuts down
