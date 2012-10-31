@@ -5,7 +5,6 @@ import com.sg.json.*;
 import com.sg.models.*;
 import com.sg.utils.*;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,15 +22,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-
 import org.apache.commons.codec.binary.Base64;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpHost;
-
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.AuthCache;
@@ -42,17 +37,14 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import org.apache.http.protocol.BasicHttpContext;
 
 import com.google.gson.*;
@@ -70,13 +62,12 @@ public class ConnectionManager {
 	private String url;
 	private String sid;
 	private String token;
-	
-	public boolean authenticated = false;
+	private boolean authenticated = false;
 	
 	private Gson gson = new Gson();
 	
 	/**
-	 * Constructor
+	 * Full Constructor
 	 * 
 	 * @param _url
 	 * 		The base url to connect to
@@ -94,20 +85,34 @@ public class ConnectionManager {
 		this.token = _token;
 		this.VERBOSE = _VERBOSE;
 		this.authenticated = this.authenticate();
+		if(!this.authenticated) System.out.println("Failed to authenticate, please check your SID and Token");
 	}
-	
+	/**
+	 * Simple Constructor
+	 * 
+	 * @param _sid
+	 * 		SID for authentication
+	 * @param _token
+	 * 		token for authentication
+	 */
 	public ConnectionManager(String _sid, String _token){
 		this.url = "https://sunglass.io/api/v1";
 		this.sid = _sid;
 		this.token = _token;
 		this.VERBOSE = false;
 		this.authenticated = this.authenticate();
+		if(!this.authenticated) System.out.println("Failed to authenticate, please check your SID and Token");
 	}
 	
 	//------------------ API SPECIFIC FUNCTIONS
 	
-	// GET
 	
+	/**
+	 * test sid and token for authentication with the server
+	 *
+	 * @return auth
+	 *		  true if authenticated success, false if failed
+	 */
 	public boolean authenticate(){
 		boolean auth = false;
 		ProjectList testProjects = this.getProjects();
@@ -116,7 +121,17 @@ public class ConnectionManager {
 		}
 		return auth;
 	}
-
+	/**
+	 * simple method to quickly upload a model to the server
+	 * 
+	 * @param filepath
+	 * 			the path to the model to upload
+	 * @param projectName
+	 * 			the name of the project to create and upload the model to
+	 * 
+	 * @return Project
+	 *		  Sunglass project
+	 */
 	public Project sunglassWrite(String filepath, String projectName){
 		
 		java.util.Date date= new java.util.Date();
@@ -134,6 +149,7 @@ public class ConnectionManager {
 		return project;
 	}
 	
+	// GET
 	
 	/**
 	 * get all of the projects for user
@@ -187,6 +203,27 @@ public class ConnectionManager {
 		JSONObject spaceJSON = this.httpGetRequest("/projects/"+project_id+"/spaces/"+id);
 		Space space = gson.fromJson(spaceJSON.toString(), Space.class);
 		return space;
+	}
+	/**
+	 * get the root space of a project
+	 * 
+	 * @param project_id
+	 * 			  the unique id of the project
+	 *
+	 * @return Space
+	 * 			  Sunglass Space object
+	 * 
+	 */
+	public Space getRootSpace(String project_id){
+		SpaceList projectSpaces = this.getSpaces(project_id);
+		
+		for(Space space : projectSpaces.getSpaces()){
+			if(space.getId() == space.getParentSpaceId()){
+				return space;
+			}
+		}
+		
+		return null;
 	}
 	/**
 	 * get a list of subspaces of a specific space by its unique id
@@ -625,28 +662,6 @@ public class ConnectionManager {
 	 * 			the unique id of the project to create the space in
 	 * @param name
 	 * 			 the name for the new space
-	 * @return Space
-	 * 			  Sunglass Space object
-	 */
-	public Space createSpace(String project_id, String name){
-		JSONObject data = new JSONObject();
-		try{
-			data.put("name", name);
-		}catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		JSONObject spaceJSON = this.httpPostRequest("/projects/"+project_id+"/spaces", data);
-		Space space = gson.fromJson(spaceJSON.toString(), Space.class);
-		return space;
-	}
-	/**
-	 * create a new space
-	 *
-	 * @param project_id
-	 * 			the unique id of the project to create the space in
-	 * @param name
-	 * 			 the name for the new space
 	 * @param description
 	 * 			 the description for the new space
 	 * @return Space
@@ -685,7 +700,7 @@ public class ConnectionManager {
 		}catch (JSONException e) {
 			e.printStackTrace();
 		}
-		System.out.println(model_id);
+		
 		JSONObject metaModelJSON = this.httpPostRequest("/projects/"+project_id+"/spaces/"+space_id+"/metamodels", data);
 		MetaModel metaModel = gson.fromJson(metaModelJSON.toString(), MetaModel.class);
 		return metaModel;

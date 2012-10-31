@@ -1,8 +1,8 @@
 package com.sg.models;
 
 public class Attachment {
-	private Integer noteId;
-	private Integer attachmentId;
+	private String noteId;
+	private String attachmentId;
 	private String aType;
 	private AttachmentData attachmentData;
 	private String path;
@@ -10,19 +10,19 @@ public class Attachment {
 	private String modifiedAt;
 	private String content;
 	
-	public Integer getNoteId() {
+	public String getNoteId() {
 	return noteId;
 	}
 
-	public void setNoteId(Integer noteId) {
+	public void setNoteId(String noteId) {
 	this.noteId = noteId;
 	}
 
-	public Integer getAttachmentId() {
+	public String getAttachmentId() {
 	return attachmentId;
 	}
 
-	public void setAttachmentId(Integer attachmentId) {
+	public void setAttachmentId(String attachmentId) {
 	this.attachmentId = attachmentId;
 	}
 

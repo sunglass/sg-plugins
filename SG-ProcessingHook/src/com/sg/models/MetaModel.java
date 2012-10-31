@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MetaModel {
 
-private Integer id;
+private String id;
 private String spaceId;
 private Integer projectId;
 private String modelId;
@@ -15,11 +15,11 @@ private String modifiedAt;
 private ModelDetails modelDetails;
 private String href;
 
-public Integer getId() {
+public String getId() {
 return id;
 }
 
-public void setId(Integer id) {
+public void setId(String id) {
 this.id = id;
 }
 

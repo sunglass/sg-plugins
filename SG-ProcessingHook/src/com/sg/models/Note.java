@@ -3,7 +3,7 @@ package com.sg.models;
 import java.util.ArrayList;
 
 public class Note {
-	private Integer id;
+	private String id;
 	private String spaceId;
 	private Integer projectId;
 	private String noteData;
@@ -12,11 +12,11 @@ public class Note {
 	private String createdAt;
 	private String modifiedAt;
 	
-	public Integer getId() {
+	public String getId() {
 	return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 	this.id = id;
 	}
 
